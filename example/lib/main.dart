@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:k_chart/flutter_k_chart.dart';
-import 'package:k_chart/k_chart_widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -46,14 +45,10 @@ class _MyHomePageState extends State<MyHomePage> {
     rootBundle.loadString('assets/depth.json').then((result) {
       final parseJson = json.decode(result);
       Map tick = parseJson['tick'];
-      var bids = tick['bids']
-          .map((item) => DepthEntity(item[0], item[1]))
-          .toList()
-          .cast<DepthEntity>();
-      var asks = tick['asks']
-          .map((item) => DepthEntity(item[0], item[1]))
-          .toList()
-          .cast<DepthEntity>();
+      var bids =
+          tick['bids'].map((item) => DepthEntity(item[0], item[1])).toList().cast<DepthEntity>();
+      var asks =
+          tick['asks'].map((item) => DepthEntity(item[0], item[1])).toList().cast<DepthEntity>();
       initDepth(bids, asks);
     });
   }
@@ -100,11 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 fixedLength: 2,
                 timeFormat: TimeFormat.YEAR_MONTH_DAY,
                 isChinese: false,
-                bgColor: [
-                  Color(0xFF121128),
-                  Color(0xFF121128),
-                  Color(0xFF121128)
-                ],
+                bgColor: [Color(0xFF121128), Color(0xFF121128), Color(0xFF121128)],
               ),
             ),
             if (showLoading)
@@ -231,12 +222,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget button(String text, {VoidCallback onPressed, bool selected = false}) {
-    return SizedBox(
+    return Container(
       width: 50.0,
       height: 30.0,
-      child: FlatButton(
-        padding: EdgeInsets.all(0.0),
-        onPressed: () {
+      color: selected ? Colors.blue : Colors.blue.withOpacity(0.6),
+      padding: EdgeInsets.all(0.0),
+      alignment: Alignment.center,
+      child: GestureDetector(
+        onTap: () {
           if (onPressed != null) {
             onPressed();
             setState(() {});
@@ -248,7 +241,6 @@ class _MyHomePageState extends State<MyHomePage> {
             fontSize: 12.0,
           ),
         ),
-        color: selected ? Colors.blue : Colors.blue.withOpacity(0.6),
       ),
     );
   }
